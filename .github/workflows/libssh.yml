@@ -78,6 +78,10 @@ jobs:
           wget https://www.nasm.us/pub/nasm/releasebuilds/2.15.05/win32/nasm-2.15.05-win32.zip -outfile nasm-2.15.05-win32.zip
           7z x nasm-2.15.05-win32.zip
           ren nasm-2.15.05 nasm
+          dir
+          cd nasm
+          dir
+          cd ..
           cd ..          
           
           # Install perl modules required by OpenSSL build
@@ -94,6 +98,7 @@ jobs:
         run: |
           cd openssl\${{env.OPENSSL_VERSION}}
           set PATH=%PATH%;${{env.GITHUB_WORKSPACE}}\tools\nasm
+          echo %PATH%
           perl Configure VC-WIN32 zlib-dynamic --with-zlib-include=${{env.GITHUB_WORKSPACE}}\zlib\${{env.ZLIB_VERSION}}
       - name: Build openssl
         shell: powershell
