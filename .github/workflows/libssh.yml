@@ -40,7 +40,17 @@ jobs:
           toolset: ${{ matrix.toolset }}
           #sdk:   # use the latest
           #spectre: # set true to use VC libraries with sepctre mitigations
+          
+      - name: Cache
+        uses: actions/cache@v3.0.5
+        id: cache-optional-dependencies
+        with:
+          # A list of files, directories, and wildcard patterns to cache and restore
+          path: zlib openssl libssh tools
+          key: msvc-${{ matrix.toolset }}-${{ matrix.arch }}+zlib-${{env.ZLIB_VERSION}}+openssl-${{env.OPENSSL_VERSION}}+libssh-${{env.LIBSSH_VERSION}}
+          
       - name: Get dependencies
+        if: steps.cache-optional-dependencies.outputs.cache-hit != 'true'
         run: |
           # Get and unpack zlib
           mkdir zlib
@@ -49,6 +59,7 @@ jobs:
           7z x zlib-${{env.ZLIB_VERSION}}.tar.gz
           7z x zlib-${{env.ZLIB_VERSION}}.tar
           ren zlib-${{env.ZLIB_VERSION}} ${{env.ZLIB_VERSION}}
+          del *.tar *.gz
           cd ..
           
           # Get and unpack openssl
@@ -58,6 +69,7 @@ jobs:
           7z x openssl-${{env.OPENSSL_VERSION}}.tar.gz
           7z x openssl-${{env.OPENSSL_VERSION}}.tar
           ren openssl-${{env.OPENSSL_VERSION}} ${{env.OPENSSL_VERSION}}
+          del *.tar *.gz
           cd ..
           
           # Get and unpack libssh
@@ -67,6 +79,7 @@ jobs:
           7z x libssh-${{env.LIBSSH_VERSION}}.tar.xz
           7z x libssh-${{env.LIBSSH_VERSION}}.tar
           ren libssh-${{env.LIBSSH_VERSION}} ${{env.LIBSSH_VERSION}}
+          del *.tar *.xz
           cd ${{env.LIBSSH_VERSION}}
           mkdir build
           cd ..
@@ -87,13 +100,17 @@ jobs:
           # Install perl modules required by OpenSSL build
           cpan -i Text::Template
         shell: powershell          
+        
       - name: Build zlib
+        if: steps.cache-optional-dependencies.outputs.cache-hit != 'true'
         shell: cmd
         run: |
           cd zlib\${{env.ZLIB_VERSION}}
           cmake .
           nmake -f win32\Makefile.msc
+          
       - name: Build openssl
+        if: steps.cache-optional-dependencies.outputs.cache-hit != 'true'
         shell: powershell
         run: |
           cd openssl\${{env.OPENSSL_VERSION}}
@@ -101,7 +118,9 @@ jobs:
           $env:Path
           perl Configure VC-WIN32 zlib-dynamic --with-zlib-include=${{github.workspace}}\zlib\${{env.ZLIB_VERSION}}        
           nmake
+          
       - name: Build libssh
+        if: steps.cache-optional-dependencies.outputs.cache-hit != 'true'
         shell: powershell
         run: |
           cd libssh\${{env.LIBSSH_VERSION}}\build
