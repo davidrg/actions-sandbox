@@ -93,7 +93,7 @@ jobs:
         shell: cmd
         run: |
           cd openssl\${{env.OPENSSL_VERSION}}
-          set PATH="%PATH%;${{env.GITHUB_WORKSPACE}}\tools\nasm"
+          set PATH=%PATH%;${{env.GITHUB_WORKSPACE}}\tools\nasm
           perl Configure VC-WIN32 zlib-dynamic --with-zlib-include=${{env.GITHUB_WORKSPACE}}\zlib\${{env.ZLIB_VERSION}}
       - name: Build openssl
         shell: powershell
