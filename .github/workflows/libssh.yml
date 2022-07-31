@@ -79,6 +79,9 @@ jobs:
           7z x nasm-2.15.05-win32.zip
           ren nasm-2.15.05 nasm
           cd ..          
+          
+          # Install perl modules required by OpenSSL build
+          cpan -i Text::Template
         shell: powershell          
       - name: Build zlib
         shell: cmd
@@ -87,9 +90,8 @@ jobs:
           cmake .
           nmake -f win32\Makefile.msc
       - name: Build openssl
-        shell: cmd
+        shell: powershell
         run: |
           cd openssl\${{env.OPENSSL_VERSION}}
-          cpan -i Text::Template
           perl Configure VC-WIN32 zlib-dynamic --with-zlib-include=${{env.GITHUB_WORKSPACE}}\zlib\${{env.ZLIB_VERSION}}
           nmake
