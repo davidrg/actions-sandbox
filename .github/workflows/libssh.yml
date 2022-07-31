@@ -46,8 +46,8 @@ jobs:
         id: cache-optional-dependencies
         with:
           # A list of files, directories, and wildcard patterns to cache and restore
-          path: zlib openssl libssh tools
-          key: msvc-${{ matrix.toolset }}-${{ matrix.arch }}+zlib-${{env.ZLIB_VERSION}}+openssl-${{env.OPENSSL_VERSION}}+libssh-${{env.LIBSSH_VERSION}}
+          path: ${{github.workspace}}\zlib ${{github.workspace}}\openssl ${{github.workspace}}\libssh ${{github.workspace}}\tools
+          key: msvc-${{ matrix.toolset }}-${{ matrix.arch }}+zlib-${{env.ZLIB_VERSION}}+openssl-${{env.OPENSSL_VERSION}}+libssh-${{env.LIBSSH_VERSION}}+nasm
           
       - name: Get dependencies
         if: steps.cache-optional-dependencies.outputs.cache-hit != 'true'
