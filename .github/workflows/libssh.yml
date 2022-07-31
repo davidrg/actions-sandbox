@@ -59,7 +59,8 @@ jobs:
           7z x zlib-${{env.ZLIB_VERSION}}.tar.gz
           7z x zlib-${{env.ZLIB_VERSION}}.tar
           ren zlib-${{env.ZLIB_VERSION}} ${{env.ZLIB_VERSION}}
-          del *.tar *.gz
+          del *.tar 
+          del *.gz
           cd ..
           
           # Get and unpack openssl
@@ -69,7 +70,8 @@ jobs:
           7z x openssl-${{env.OPENSSL_VERSION}}.tar.gz
           7z x openssl-${{env.OPENSSL_VERSION}}.tar
           ren openssl-${{env.OPENSSL_VERSION}} ${{env.OPENSSL_VERSION}}
-          del *.tar *.gz
+          del *.tar 
+          del *.gz
           cd ..
           
           # Get and unpack libssh
@@ -79,7 +81,8 @@ jobs:
           7z x libssh-${{env.LIBSSH_VERSION}}.tar.xz
           7z x libssh-${{env.LIBSSH_VERSION}}.tar
           ren libssh-${{env.LIBSSH_VERSION}} ${{env.LIBSSH_VERSION}}
-          del *.tar *.xz
+          del *.tar 
+          del *.xz
           cd ${{env.LIBSSH_VERSION}}
           mkdir build
           cd ..
@@ -91,6 +94,7 @@ jobs:
           wget https://www.nasm.us/pub/nasm/releasebuilds/2.15.05/win32/nasm-2.15.05-win32.zip -outfile nasm-2.15.05-win32.zip
           7z x nasm-2.15.05-win32.zip
           ren nasm-2.15.05 nasm
+          del *.zip
           dir
           cd nasm
           dir
