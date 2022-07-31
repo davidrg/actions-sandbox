@@ -93,8 +93,13 @@ jobs:
         shell: powershell
         run: |
           cd openssl\${{env.OPENSSL_VERSION}}
-          $env:Path += ';${{env.GITHUB_WORKSPACE}}\tools\nasm'
+          $env:Path += ";${{env.GITHUB_WORKSPACE}}\tools\nasm"
           perl Configure VC-WIN32 zlib-dynamic --with-zlib-include=${{env.GITHUB_WORKSPACE}}\zlib\${{env.ZLIB_VERSION}}
           nmake
+      - name: Build libssh
+        shell: powershell
+        run: |
+          cd libssh\${{env.LIBSSH_VERSION}}\build
+          cmake .. -G "NMake Makefiles" -DOPENSSL_ROOT_DIR=${{env.GITHUB_WORKSPACE}}\openssl\${{env.OPENSSL_VERSION}}\ -DZLIB_ROOT=${{env.GITHUB_WORKSPACE}}\zlib\${{env.ZLIB_VERSION}}\
+          nmake
 
-         
