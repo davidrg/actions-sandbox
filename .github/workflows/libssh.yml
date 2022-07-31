@@ -91,5 +91,5 @@ jobs:
         run: |
           cd openssl\${{env.OPENSSL_VERSION}}
           cpan -i Text::Template
-          perl Configure VC-WIN32 zlib-dynamic --with-zlib-include=${{GITHUB_WORKSPACE}}\zlib\${{env.ZLIB_VERSION}}
+          perl Configure VC-WIN32 zlib-dynamic --with-zlib-include=${{env.GITHUB_WORKSPACE}}\zlib\${{env.ZLIB_VERSION}}
           nmake
