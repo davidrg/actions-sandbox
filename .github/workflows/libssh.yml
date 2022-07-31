@@ -97,7 +97,7 @@ jobs:
         shell: powershell
         run: |
           cd openssl\${{env.OPENSSL_VERSION}}
-          $env:Path += ";${{env.GITHUB_WORKSPACE}}\tools\nasm"
+          $env:Path += ";${{github.workspace}}\tools\nasm"
           $env:Path
           perl Configure VC-WIN32 zlib-dynamic --with-zlib-include=${{github.workspace}}\zlib\${{env.ZLIB_VERSION}}        
           nmake
